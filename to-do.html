@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Simple TODO application</title>
+</head>
+
+<body>
+    <html ng-app="todoApp">
+    <div ng-controller="TodoListController" class="col-md-6">
+        <h1>TODO</h1>
+        <h3>Pozostało {{remaining()}} z {{list.length}}</h3>
+        <a ng-click="archive()" class="btn btn-danger">Usuń ukończone</a>
+        <ul>
+            <li ng-repeat="item in list">
+                <input type="checkbox" ng-model="item.done" />
+                <span>{{item.title}}</span>
+            </li>
+        </ul>
+        <div class="col-md-6">
+            <input type="text" ng-model="newTodo" class="form-control" /><button ng-click="add()" type="button"
+                class="btn btn-primary">Dodaj</button>
+        </div>
+    </div>
+
+    </html>
+</body>
+
+<script type="text/javascript">
+    angular.module('todoApp', [])
+    angular.module('todoApp', [])
+        .controller('TodoListController', function ($scope) {
+            $scope.list = [
+                { title: 'zadanie 1', done: true },
+                { title: 'zadanie ', done: false },
+            ];
+
+            $scope.remaining = function () {
+                var count = 0;
+                angular.forEach($scope.list, function (todo) {
+                    count += todo.done ? 0 : 1;
+                });
+                return count;
+            };
+
+            $scope.archive = function () {
+                var oldTodos = $scope.list;
+                $scope.list = [];
+                angular.forEach(oldTodos, function (todo) {
+                    if (!todo.done) $scope.list.push(todo);
+                });
+            };
+
+            $scope.add = function () {
+                $scope.list.push({ title: $scope.newTodo, done: false });
+                $scope.newTodo = '';
+            };
+        });
+</script>
+
+</html>
